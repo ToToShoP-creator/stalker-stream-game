@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>S.T.A.L.K.E.R. Stream Arcade</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #0b0f0c;
+            color: #b5c2b7;
+            font-family: 'Courier New', Courier, monospace;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+        #game-container {
+            position: relative;
+            width: 800px;
+            height: 500px;
+            background: #121c14;
+            border: 3px solid #3b533d;
+            box-shadow: 0 0 20px rgba(59, 83, 61, 0.4);
+            overflow: hidden;
+        }
+        canvas {
+            display: block;
+            background: linear-gradient(to bottom, #111812, #070a08);
+        }
+        .hud {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            font-size: 18px;
+            color: #d4af37;
+            text-shadow: 0 0 5px rgba(212, 175, 55, 0.5);
+        }
+        .chat-hint {
+            margin-top: 15px;
+            font-size: 14px;
+            color: #728c74;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="game-container">
+        <div class="hud" id="hud">Артефакти: 0 | Здоров'я: 100%</div>
+        <canvas id="gameCanvas" width="800" height="500"></canvas>
+    </div>
+    <div class="chat-hint">Керування для стріму: стрілки ← → або команди чату (в розробці)</div>
+
+<script>
+    const canvas = document.getElementById('gameCanvas');
+    const ctx = canvas.getContext('2d');
+    const hud = document.getElementById('hud');
+
+    let score = 0;
+    let health = 100;
+    let isGameOver = false;
+
+    // Гравець (Сталкер)
+    const player = {
+        x: 375,
+        y: 420,
+        width: 50,
+        height: 50,
+        speed: 8,
+        dx: 0
+    };
+
+    // Об'єкти в Зоні (Артефакти та Аномалії)
+    let items = [];
+
+    function spawnItem() {
+        const isAnomaly = Math.random() < 0.4; // 40% шанс появи аномалії
+        items.push({
+            x: Math.random() * (canvas.width - 40),
+            y: -40,
+            width: 40,
+            height: 40,
+            speed: 3 + Math.random() * 3,
+            type: isAnomaly ? 'anomaly' : 'artifact'
+        });
+    }
+
+    // Слухаємо клавіатуру (для тесту або ручного підгрупування)
+    window.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowLeft' || e.key === 'a') player.dx = -player.speed;
+        if (e.key === 'ArrowRight' || e.key === 'd') player.dx = player.speed;
+    });
+
+    window.addEventListener('keyup', (e) => {
+        if ((e.key === 'ArrowLeft' || e.key === 'a') && player.dx < 0) player.dx = 0;
+        if ((e.key === 'ArrowRight' || e.key === 'd') && player.dx > 0) player.dx = 0;
+    });
+
+    function update() {
+        if (isGameOver) return;
+
+        player.x += player.dx;
+        if (player.x < 0) player.x = 0;
+        if (player.x + player.width > canvas.width) player.x = canvas.width - player.width;
+
+        // Спавн об'єктів
+        if (Math.random() < 0.03) {
+            spawnItem();
+        }
+
+        // Рух об'єктів
+        for (let i = items.length - 1; i >= 0; i--) {
+            let item = items[i];
+            item.y += item.speed;
+
+            // Зіткнення з гравцем
+            if (
+                player.x < item.x + item.width &&
+                player.x + player.width > item.x &&
+                player.y < item.y + item.height &&
+                player.y + player.height > item.y
+            ) {
+                if (item.type === 'artifact') {
+                    score += 100;
+                } else {
+                    health -= 25;
+                    if (health <= 0) health = 0;
+                }
+                items.splice(i, 1);
+                continue;
+            }
+
+            // Видалення за екраном
+            if (item.y > canvas.height) {
+                items.splice(i, 1);
+            }
+        }
+
+        if (health <= 0) {
+            isGameOver = true;
+        }
+    }
+
+    function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        // Малюємо гравця (Сталкер у плащі)
+        ctx.fillStyle = '#4e6e52';
+        ctx.fillRect(player.x, player.y, player.width, player.height);
+        ctx.fillStyle = '#1b261c';
+        ctx.fillRect(player.x + 10, player.y + 10, 30, 20); // капюшон/протигаз
+
+        // Малюємо артефакти та аномалії
+        items.forEach(item => {
+            if (item.type === 'artifact') {
+                ctx.fillStyle = '#d4af37'; // Золотий артефакт
+                ctx.beginPath();
+                ctx.arc(item.x + 20, item.y + 20, 15, 0, Math.PI * 2);
+                ctx.fill();
+            } else {
+                ctx.fillStyle = '#8b0000'; // Червона аномалія
+                ctx.beginPath();
+                ctx.arc(item.x + 20, item.y + 20, 18, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        });
+
+        // Оновлення HUD
+        hud.innerText = `Артефакти (Очки): ${score} | Здоров'я: ${health}%`;
+
+        if (isGameOver) {
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.8)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = '#ff4444';
+            ctx.font = '30px Courier New';
+            ctx.textAlign = 'center';
+            ctx.fillText('ВИ ЗАГИНУЛИ В ЗОНІ', canvas.width / 2, canvas.height / 2);
+        }
+    }
+
+    function loop() {
+        update();
+        draw();
+        if (!isGameOver) {
+            requestAnimationFrame(loop);
+        }
+    }
+
+    loop();
+</script>
+
+</body>
+</html>
