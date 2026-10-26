@@ -7,7 +7,7 @@
     <style>
         :root {
             --bg-dark: #070907;
-            --panel-bg: rgba(12, 20, 14, 0.85);
+            --panel-bg: rgba(12, 20, 14, 0.9);
             --border-green: #2e4d32;
             --neon-stalker: #00ff66;
             --neon-mutant: #ff0055;
@@ -43,13 +43,13 @@
             display: block;
         }
 
-        /* HUD та Інтерфейс */
+        /* Верхній HUD */
         .hud-top {
             position: absolute;
             top: 15px;
             left: 50%;
             transform: translateX(-50%);
-            width: 900px;
+            width: 850px;
             background: var(--panel-bg);
             border: 2px solid var(--border-green);
             padding: 10px 20px;
@@ -82,53 +82,57 @@
             overflow: hidden;
         }
 
-        .bar-stalkers {
-            height: 100%;
-            background: var(--neon-stalker);
-            width: 50%;
-            transition: width 0.3s ease;
-            box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
-        }
+        .bar-stalkers { height: 100%; background: var(--neon-stalker); width: 50%; transition: width 0.3s ease; }
+        .bar-mutants { height: 100%; background: var(--neon-mutant); width: 50%; transition: width 0.3s ease; }
 
-        .bar-mutants {
-            height: 100%;
-            background: var(--neon-mutant);
-            width: 50%;
-            transition: width 0.3s ease;
-            box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
-        }
-
-        /* Підказки у правому кутку */
+        /* Візуальна панель подарунків з іконками */
         .gift-hints {
             position: absolute;
             top: 15px;
             right: 15px;
-            width: 260px;
+            width: 280px;
             background: var(--panel-bg);
             border: 2px solid var(--border-green);
-            padding: 10px;
+            padding: 12px;
             font-size: 11px;
             z-index: 10;
             box-shadow: 0 0 15px rgba(0,0,0,0.8);
         }
 
         .gift-hints h4 {
-            margin: 0 0 5px 0;
+            margin: 0 0 8px 0;
             color: var(--neon-gold);
             text-align: center;
             font-size: 13px;
             text-shadow: 0 0 5px var(--neon-gold);
+            border-bottom: 1px solid var(--border-green);
+            padding-bottom: 4px;
         }
 
-        .hint-row {
+        .hint-item {
             display: flex;
+            align-items: center;
             justify-content: space-between;
-            margin-bottom: 3px;
-            border-bottom: 1px dashed #223;
-            padding-bottom: 2px;
+            margin-bottom: 6px;
+            border-bottom: 1px dashed #1c2b1e;
+            padding-bottom: 4px;
         }
 
-        /* Панель підключення та тестів */
+        .gift-icon {
+            font-size: 16px;
+            width: 30px;
+            text-align: center;
+        }
+
+        .gift-info {
+            flex-grow: 1;
+            padding-left: 5px;
+        }
+
+        .gift-name { color: #fff; font-weight: bold; }
+        .gift-unit { color: #8fa892; font-size: 10px; }
+
+        /* Панель керування */
         .control-panel {
             margin-top: 10px;
             background: var(--panel-bg);
@@ -183,14 +187,49 @@
             </div>
         </div>
 
-        <!-- Підказки з подарунками -->
+        <!-- Інформаційна панель подарунків з іконками -->
         <div class="gift-hints">
-            <h4>ПОДАРУНКИ ЗОНИ</h4>
-            <div class="hint-row"><span>Rose (Слабкий):</span><span style="color:var(--neon-stalker)">Новічок / Снорк</span></div>
-            <div class="hint-row"><span>TikTok (Слабкий):</span><span style="color:var(--neon-stalker)">Сталкер / Плоть</span></div>
-            <div class="hint-row"><span>Finger Heart (Середній):</span><span style="color:var(--neon-stalker)">Досвідчений / Кровосос</span></div>
-            <div class="hint-row"><span>Cap (Середній):</span><span style="color:var(--neon-stalker)">Ветеран / Бюрер</span></div>
-            <div class="hint-row"><span>Universe (Елітний):</span><span style="color:var(--neon-gold)">ЛЕГЕНДА / КОЦЕЛУТ</span></div>
+            <h4>АРСЕНАЛ ПОДАРУНКІВ</h4>
+            
+            <div class="hint-item">
+                <div class="gift-icon">🌹</div>
+                <div class="gift-info">
+                    <div class="gift-name">Rose (Слабкий)</div>
+                    <div class="gift-unit">Сталкер Новічок / Снорк</div>
+                </div>
+            </div>
+
+            <div class="hint-item">
+                <div class="gift-icon">🎵</div>
+                <div class="gift-info">
+                    <div class="gift-name">TikTok (Слабкий)</div>
+                    <div class="gift-unit">Сталкер / Плоть</div>
+                </div>
+            </div>
+
+            <div class="hint-item">
+                <div class="gift-icon">🫰</div>
+                <div class="gift-info">
+                    <div class="gift-name">Finger Heart (Середній)</div>
+                    <div class="gift-unit">Досвідчений / Кровосос</div>
+                </div>
+            </div>
+
+            <div class="hint-item">
+                <div class="gift-icon">🧢</div>
+                <div class="gift-info">
+                    <div class="gift-name">Cap (Середній)</div>
+                    <div class="gift-unit">Ветеран / Бюрер</div>
+                </div>
+            </div>
+
+            <div class="hint-item">
+                <div class="gift-icon">🌌</div>
+                <div class="gift-info">
+                    <div class="gift-name" style="color:var(--neon-gold)">Universe (Елітний)</div>
+                    <div class="gift-unit" style="color:var(--neon-gold)">ЛЕГЕНДА / КОЦЕЛУТ</div>
+                </div>
+            </div>
         </div>
 
         <canvas id="arenaCanvas" width="1200" height="700"></canvas>
@@ -199,12 +238,12 @@
     <!-- Панель керування та симуляції -->
     <div class="control-panel">
         <label>TikTok @UniqueId:</label>
-        <input type="text" id="uniqueIdInput" placeholder="введіть нік стрімера">
+        <input type="text" id="uniqueIdInput" value="scrp_lab" placeholder="введіть нік стрімера">
         <button id="connectBtn">Підключити LIVE</button>
         <div style="border-left: 1px solid #444; height: 25px; margin: 0 5px;"></div>
-        <button class="btn-stalker" onclick="simulateGift('Stalker', 'Novice', 'Сергій')">+ Сталкер (Тест)</button>
-        <button class="btn-mutant" onclick="simulateGift('Mutant', 'Snork', 'Монстр')">+ Мутант (Тест)</button>
-        <button onclick="resetArena()">Перезапуск</button>
+        <button class="btn-stalker" id="testStalkerBtn">+ Сталкер (Тест)</button>
+        <button class="btn-mutant" id="testMutantBtn">+ Мутант (Тест)</button>
+        <button id="resetBtn">Перезапуск</button>
     </div>
 
 <script>
@@ -214,12 +253,10 @@
     let fighters = [];
     let floatingTexts = [];
     let scores = { stalkers: 0, mutants: 0 };
-    let stats = { stalkersWins: 0, mutantsWins: 0 };
 
-    // Клас Бієць
     class Fighter {
         constructor(faction, rankConfig, username) {
-            this.faction = faction; // 'Stalker' або 'Mutant'
+            this.faction = faction; 
             this.name = username || (faction === 'Stalker' ? 'Стрілець' : 'Мутант');
             this.rank = rankConfig.name;
             this.maxHp = rankConfig.hp;
@@ -229,7 +266,6 @@
             this.size = rankConfig.size;
             this.speed = rankConfig.speed;
 
-            // Спавн збоку залежно від фракції
             this.x = faction === 'Stalker' ? 80 : canvas.width - 80;
             this.y = 150 + Math.random() * 450;
             this.target = null;
@@ -238,7 +274,6 @@
         }
 
         update() {
-            // Пошук найближчого ворога
             if (!this.target || this.target.hp <= 0) {
                 this.findTarget();
             }
@@ -249,18 +284,15 @@
                 let dist = Math.hypot(dx, dy);
 
                 if (dist > this.range) {
-                    // Рух до ворога
                     this.x += (dx / dist) * this.speed;
                     this.y += (dy / dist) * this.speed;
                 } else {
-                    // Атака
                     if (this.attackCooldown <= 0) {
                         this.attack(this.target);
-                        this.attackCooldown = 50; // кадри між атаками
+                        this.attackCooldown = 50;
                     }
                 }
             } else {
-                // Рух до центру, якщо немає ворогів
                 let centerX = canvas.width / 2;
                 if (Math.abs(this.x - centerX) > 50) {
                     this.x += (this.faction === 'Stalker' ? 1 : -1) * this.speed;
@@ -289,13 +321,10 @@
             enemy.hp -= this.damage;
             createFloatingText(`-${this.damage}`, enemy.x, enemy.y - 20, this.color);
             
-            // Оновлення очок фракції при нанесенні шкоди
             if (this.faction === 'Stalker') scores.stalkers += this.damage;
             else scores.mutants += this.damage;
 
-            if (enemy.hp <= 0) {
-                enemy.hp = 0;
-            }
+            if (enemy.hp <= 0) enemy.hp = 0;
         }
 
         draw() {
@@ -304,11 +333,9 @@
             ctx.save();
             ctx.translate(this.x, this.y);
 
-            // Тінь та світіння
             ctx.shadowBlur = 12;
             ctx.shadowColor = this.color;
 
-            // Тіло бійця (геометричний силует у стилі сталкер/мутант)
             ctx.fillStyle = this.color;
             ctx.beginPath();
             if (this.faction === 'Stalker') {
@@ -320,13 +347,11 @@
 
             ctx.shadowBlur = 0;
 
-            // Нікнейм глядача та ранг над головою
             ctx.fillStyle = '#fff';
             ctx.font = '11px Courier New';
             ctx.textAlign = 'center';
             ctx.fillText(`${this.name} [${this.rank}]`, 0, -this.size - 18);
 
-            // HP бар
             let barW = 40;
             let barH = 5;
             ctx.fillStyle = '#222';
@@ -338,7 +363,6 @@
         }
     }
 
-    // Клас для анімації пошкоджень
     class FloatingText {
         constructor(text, x, y, color) {
             this.text = text;
@@ -347,10 +371,7 @@
             this.color = color;
             this.life = 40;
         }
-        update() {
-            this.y -= 1;
-            this.life--;
-        }
+        update() { this.y -= 1; this.life--; }
         draw() {
             ctx.save();
             ctx.font = 'bold 16px Courier New';
@@ -366,9 +387,8 @@
         floatingTexts.push(new FloatingText(text, x, y, color));
     }
 
-    // Визначення рангу за подарунком
     function getRankConfig(giftName) {
-        const lower = giftName.toLowerCase();
+        const lower = (giftName || '').toLowerCase();
         if (lower.includes('universe') || lower.includes('lion') || lower.includes('dragon')) {
             return { name: 'ЕЛІТА', hp: 100, dmg: 20, range: 70, size: 28, speed: 1.8 };
         } else if (lower.includes('heart') || lower.includes('cap') || lower.includes('glam')) {
@@ -378,29 +398,30 @@
         }
     }
 
-    // Спавн бійця від події подарунка
     function spawnFighterFromGift(giftName, username, forceFaction) {
         let faction = forceFaction || (Math.random() < 0.5 ? 'Stalker' : 'Mutant');
         let config = getRankConfig(giftName);
         fighters.push(new Fighter(faction, config, username));
     }
 
-    window.simulateGift = function(faction, giftType, username) {
-        let testGifts = giftType === 'Snork' ? 'Rose' : 'Universe';
-        spawnFighterFromGift(testGifts, username || 'Глядач', faction);
-    }
+    // Прив'язка кнопок тестів напряму через JS
+    document.getElementById('testStalkerBtn').addEventListener('click', () => {
+        spawnFighterFromGift('Rose', 'Глядач_Сталкер', 'Stalker');
+    });
 
-    window.resetArena = function() {
+    document.getElementById('testMutantBtn').addEventListener('click', () => {
+        spawnFighterFromGift('Rose', 'Глядач_Мутант', 'Mutant');
+    });
+
+    document.getElementById('resetBtn').addEventListener('click', () => {
         fighters = [];
         floatingTexts = [];
         scores = { stalkers: 0, mutants: 0 };
-    }
+    });
 
-    // Головний цикл гри
     function gameLoop() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-        // Ретро-сітка фону Зони
         ctx.strokeStyle = 'rgba(46, 77, 50, 0.15)';
         ctx.lineWidth = 1;
         for (let x = 0; x < canvas.width; x += 40) {
@@ -410,17 +431,14 @@
             ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(canvas.width, y); ctx.stroke();
         }
 
-        // Оновлення та рендер бійців
         fighters.forEach(f => f.update());
         fighters = fighters.filter(f => f.hp > 0);
         fighters.forEach(f => f.draw());
 
-        // Оновлення та рендер тексту пошкоджень
         floatingTexts.forEach(ft => ft.update());
         floatingTexts = floatingTexts.filter(ft => ft.life > 0);
         floatingTexts.forEach(ft => ft.draw());
 
-        // Оновлення HUD очок та шкали домінування
         document.getElementById('score-stalkers').innerText = `СТАЛКЕРИ: ${Math.floor(scores.stalkers)}`;
         document.getElementById('score-mutants').innerText = `МУТАНТИ: ${Math.floor(scores.mutants)}`;
 
@@ -434,7 +452,6 @@
 
     gameLoop();
 
-    // Підключення до WebSocket біджжа для TikTok Live Connector
     document.getElementById('connectBtn').addEventListener('click', () => {
         let uniqueId = document.getElementById('uniqueIdInput').value.trim();
         if (!uniqueId) {
@@ -442,11 +459,9 @@
             return;
         }
 
-        // Підключаємось до локального Node.js моста
         const ws = new WebSocket('ws://localhost:8080');
 
         ws.onopen = () => {
-            console.log('З'єднано з TikTok LIVE мостом');
             ws.send(JSON.stringify({ action: 'setUniqueId', uniqueId: uniqueId }));
             document.getElementById('timer-display').innerText = `СТРИМ: @${uniqueId}`;
         };
@@ -455,17 +470,15 @@
             try {
                 let data = JSON.parse(event.data);
                 if (data.type === 'gift') {
-                    // Визначаємо сторону на основі випадковості або назви подарунка
-                    let faction = Math.random() < 0.5 ? 'Stalker' : 'Mutant';
-                    spawnFighterFromGift(data.giftName, data.username, faction);
+                    spawnFighterFromGift(data.giftName, data.username);
                 }
             } catch (e) {
                 console.error(e);
             }
         };
 
-        ws.onerror = (err) => {
-            alert('Помилка підключення до WebSocket моста Node.js. Переконайтеся, що локальний скрипт запущено.');
+        ws.onerror = () => {
+            alert('Помилка WebSocket моста. Перевірте, чи запущено Node.js скрипт.');
         };
     });
 </script>
