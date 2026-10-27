@@ -23,7 +23,7 @@ wss.on('connection', (ws) => {
                 });
 
                 tiktokLiveConnection.on('gift', data => {
-                    // Пересилаємо подарунок у браузерну гру через WebSocket
+                    // Пересилаємо назву подарунка та нікнейм глядача у браузерну гру
                     ws.send(JSON.stringify({
                         type: 'gift',
                         username: data.uniqueId,
