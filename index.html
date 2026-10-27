@@ -6,8 +6,8 @@
     <title>S.T.A.L.K.E.R. TikTok Live Arena</title>
     <style>
         :root {
-            --bg-dark: #070907;
-            --panel-bg: rgba(12, 20, 14, 0.9);
+            --bg-dark: #030503;
+            --panel-bg: rgba(10, 16, 12, 0.92);
             --border-green: #2e4d32;
             --neon-stalker: #00ff66;
             --neon-mutant: #ff0055;
@@ -32,15 +32,19 @@
             position: relative;
             width: 1200px;
             height: 700px;
-            background: radial-gradient(circle, #111a13 0%, #050705 100%);
+            background: url('https://i.postimg.cc/7PgxgRTq/watermarked-img-6047548586178086027.jpg') no-repeat center center;
+            background-size: cover;
             border: 4px solid var(--border-green);
-            box-shadow: 0 0 30px rgba(0, 255, 102, 0.15);
+            box-shadow: 0 0 30px rgba(0, 255, 102, 0.2);
             margin-top: 10px;
             overflow: hidden;
         }
 
         canvas {
             display: block;
+            position: absolute;
+            top: 0;
+            left: 0;
         }
 
         /* Верхній HUD */
@@ -85,52 +89,77 @@
         .bar-stalkers { height: 100%; background: var(--neon-stalker); width: 50%; transition: width 0.3s ease; }
         .bar-mutants { height: 100%; background: var(--neon-mutant); width: 50%; transition: width 0.3s ease; }
 
-        /* Візуальна панель подарунків з іконками */
+        /* Двоколоночна панель подарунків */
         .gift-hints {
             position: absolute;
             top: 15px;
             right: 15px;
-            width: 280px;
+            width: 360px;
             background: var(--panel-bg);
             border: 2px solid var(--border-green);
-            padding: 12px;
-            font-size: 11px;
+            padding: 10px;
+            font-size: 10px;
             z-index: 10;
             box-shadow: 0 0 15px rgba(0,0,0,0.8);
+            display: flex;
+            flex-direction: column;
         }
 
         .gift-hints h4 {
-            margin: 0 0 8px 0;
+            margin: 0 0 6px 0;
             color: var(--neon-gold);
             text-align: center;
-            font-size: 13px;
+            font-size: 12px;
             text-shadow: 0 0 5px var(--neon-gold);
             border-bottom: 1px solid var(--border-green);
-            padding-bottom: 4px;
+            padding-bottom: 3px;
         }
 
-        .hint-item {
+        .columns-container {
             display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 6px;
-            border-bottom: 1px dashed #1c2b1e;
-            padding-bottom: 4px;
+            gap: 8px;
         }
 
-        .gift-icon {
-            font-size: 16px;
-            width: 30px;
+        .column {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .column-title {
+            text-align: center;
+            font-weight: bold;
+            font-size: 11px;
+            margin-bottom: 2px;
+            padding-bottom: 2px;
+            border-bottom: 1px dashed #333;
+        }
+
+        .col-stalker { color: var(--neon-stalker); }
+        .col-mutant { color: var(--neon-mutant); }
+
+        .hint-card {
+            background: rgba(0,0,0,0.6);
+            border: 1px solid #223;
+            padding: 4px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
             text-align: center;
         }
 
-        .gift-info {
-            flex-grow: 1;
-            padding-left: 5px;
+        .hint-card img {
+            width: 28px;
+            height: 28px;
+            object-fit: cover;
+            border-radius: 4px;
+            margin-bottom: 2px;
+            border: 1px solid #444;
         }
 
-        .gift-name { color: #fff; font-weight: bold; }
-        .gift-unit { color: #8fa892; font-size: 10px; }
+        .hint-name { font-weight: bold; color: #fff; font-size: 9px; }
+        .hint-desc { color: #8fa892; font-size: 8px; }
 
         /* Панель керування */
         .control-panel {
@@ -139,7 +168,7 @@
             border: 2px solid var(--border-green);
             padding: 10px 20px;
             display: flex;
-            gap: 15px;
+            gap: 12px;
             align-items: center;
             z-index: 10;
         }
@@ -174,7 +203,6 @@
 <body>
 
     <div id="game-wrapper">
-        <!-- Верхній HUD -->
         <div class="hud-top">
             <div class="faction-score">
                 <span id="score-stalkers" class="stalker-side">СТАЛКЕРИ: 0</span>
@@ -187,47 +215,48 @@
             </div>
         </div>
 
-        <!-- Інформаційна панель подарунків з іконками -->
+        <!-- Двоколоночна панель подарунків зі скінами -->
         <div class="gift-hints">
-            <h4>АРСЕНАЛ ПОДАРУНКІВ</h4>
-            
-            <div class="hint-item">
-                <div class="gift-icon">🌹</div>
-                <div class="gift-info">
-                    <div class="gift-name">Rose (Слабкий)</div>
-                    <div class="gift-unit">Сталкер Новічок / Снорк</div>
+            <h4>АРСЕНАЛ ПОДАРУНКІВ ЗОНИ</h4>
+            <div class="columns-container">
+                <!-- Сталкери -->
+                <div class="column">
+                    <div class="column-title col-stalker">СТАЛКЕРИ</div>
+                    <div class="hint-card">
+                        <img src="https://i.postimg.cc/bv7Zv24K/4.jpg" alt="Stalker 1">
+                        <span class="hint-name">Rose</span>
+                        <span class="hint-desc">Рівень 1 (HP:20 DMG:3)</span>
+                    </div>
+                    <div class="hint-card">
+                        <img src="https://i.postimg.cc/8C27Crxx/5.jpg" alt="Stalker 2">
+                        <span class="hint-name">TikTok</span>
+                        <span class="hint-desc">Рівень 2 (HP:50 DMG:10)</span>
+                    </div>
+                    <div class="hint-card">
+                        <img src="https://i.postimg.cc/6Qk8QGDx/6.jpg" alt="Stalker 3">
+                        <span class="hint-name">Universe</span>
+                        <span class="hint-desc">Рівень 3 (HP:120 DMG:25)</span>
+                    </div>
                 </div>
-            </div>
 
-            <div class="hint-item">
-                <div class="gift-icon">🎵</div>
-                <div class="gift-info">
-                    <div class="gift-name">TikTok (Слабкий)</div>
-                    <div class="gift-unit">Сталкер / Плоть</div>
-                </div>
-            </div>
-
-            <div class="hint-item">
-                <div class="gift-icon">🫰</div>
-                <div class="gift-info">
-                    <div class="gift-name">Finger Heart (Середній)</div>
-                    <div class="gift-unit">Досвідчений / Кровосос</div>
-                </div>
-            </div>
-
-            <div class="hint-item">
-                <div class="gift-icon">🧢</div>
-                <div class="gift-info">
-                    <div class="gift-name">Cap (Середній)</div>
-                    <div class="gift-unit">Ветеран / Бюрер</div>
-                </div>
-            </div>
-
-            <div class="hint-item">
-                <div class="gift-icon">🌌</div>
-                <div class="gift-info">
-                    <div class="gift-name" style="color:var(--neon-gold)">Universe (Елітний)</div>
-                    <div class="gift-unit" style="color:var(--neon-gold)">ЛЕГЕНДА / КОЦЕЛУТ</div>
+                <!-- Мутанти -->
+                <div class="column">
+                    <div class="column-title col-mutant">МУТАНТИ</div>
+                    <div class="hint-card">
+                        <img src="https://i.postimg.cc/q7PN7CWY/1.jpg" alt="Mutant 1">
+                        <span class="hint-name">GG</span>
+                        <span class="hint-desc">Рівень 1 (HP:20 DMG:3)</span>
+                    </div>
+                    <div class="hint-card">
+                        <img src="https://i.postimg.cc/vmJ4m6pR/2.jpg" alt="Mutant 2">
+                        <span class="hint-name">Finger Heart</span>
+                        <span class="hint-desc">Рівень 2 (HP:50 DMG:10)</span>
+                    </div>
+                    <div class="hint-card">
+                        <img src="https://i.postimg.cc/GpW4ps6W/3.jpg" alt="Mutant 3">
+                        <span class="hint-name">Lion</span>
+                        <span class="hint-desc">Рівень 3 (HP:120 DMG:25)</span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -235,14 +264,15 @@
         <canvas id="arenaCanvas" width="1200" height="700"></canvas>
     </div>
 
-    <!-- Панель керування та симуляції -->
+    <!-- Панель керування -->
     <div class="control-panel">
         <label>TikTok @UniqueId:</label>
-        <input type="text" id="uniqueIdInput" value="scrp_lab" placeholder="введіть нік стрімера">
+        <input type="text" id="uniqueIdInput" value="scrp_lab" placeholder="нік стрімера">
         <button id="connectBtn">Підключити LIVE</button>
-        <div style="border-left: 1px solid #444; height: 25px; margin: 0 5px;"></div>
+        <div style="border-left: 1px solid #444; height: 25px;"></div>
         <button class="btn-stalker" id="testStalkerBtn">+ Сталкер (Тест)</button>
         <button class="btn-mutant" id="testMutantBtn">+ Мутант (Тест)</button>
+        <button id="fullscreenBtn">Повний екран</button>
         <button id="resetBtn">Перезапуск</button>
     </div>
 
@@ -252,22 +282,84 @@
 
     let fighters = [];
     let floatingTexts = [];
+    let particleEffects = [];
     let scores = { stalkers: 0, mutants: 0 };
 
+    // Попереднє завантаження зображень скінів
+    const skinUrls = {
+        stalker1: 'https://i.postimg.cc/bv7Zv24K/4.jpg',
+        stalker2: 'https://i.postimg.cc/8C27Crxx/5.jpg',
+        stalker3: 'https://i.postimg.cc/6Qk8QGDx/6.jpg',
+        mutant1: 'https://i.postimg.cc/q7PN7CWY/1.jpg',
+        mutant2: 'https://i.postimg.cc/vmJ4m6pR/2.jpg',
+        mutant3: 'https://i.postimg.cc/GpW4ps6W/3.jpg'
+    };
+
+    const images = {};
+    for (let key in skinUrls) {
+        images[key] = new Image();
+        images[key].src = skinUrls[key];
+    }
+
+    // Клас Частинок для спец ефектів (удар / смерть)
+    class Particle {
+        constructor(x, y, color) {
+            this.x = x;
+            this.y = y;
+            this.vx = (Math.random() - 0.5) * 6;
+            this.vy = (Math.random() - 0.5) * 6;
+            this.life = 25;
+            this.color = color;
+            this.size = 3 + Math.random() * 4;
+        }
+        update() {
+            this.x += this.vx;
+            this.y += this.vy;
+            this.life--;
+        }
+        draw() {
+            ctx.save();
+            ctx.fillStyle = this.color;
+            ctx.shadowBlur = 8;
+            ctx.shadowColor = this.color;
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.restore();
+        }
+    }
+
+    function createExplosion(x, y, color) {
+        for (let i = 0; i < 12; i++) {
+            particleEffects.push(new Particle(x, y, color));
+        }
+    }
+
     class Fighter {
-        constructor(faction, rankConfig, username) {
+        constructor(faction, rankTier, username) {
             this.faction = faction; 
             this.name = username || (faction === 'Stalker' ? 'Стрілець' : 'Мутант');
-            this.rank = rankConfig.name;
-            this.maxHp = rankConfig.hp;
-            this.hp = rankConfig.hp;
-            this.damage = rankConfig.dmg;
-            this.range = rankConfig.range;
-            this.size = rankConfig.size;
-            this.speed = rankConfig.speed;
+            this.tier = rankTier; // 1, 2 або 3
 
-            this.x = faction === 'Stalker' ? 80 : canvas.width - 80;
-            this.y = 150 + Math.random() * 450;
+            // Баланс здоров'я та шкоди залежно від рівня
+            if (this.tier === 3) {
+                this.maxHp = 120; this.damage = 25; this.range = 75; this.size = 46; this.speed = 1.8;
+            } else if (this.tier === 2) {
+                this.maxHp = 50; this.damage = 10; this.range = 55; this.size = 36; this.speed = 2.4;
+            } else {
+                this.maxHp = 20; this.damage = 3; this.range = 45; this.size = 28; this.speed = 3.2;
+            }
+            this.hp = this.maxHp;
+
+            // Обмеження арени за забором (ігрові межі полотна)
+            this.minX = 100;
+            this.maxX = canvas.width - 100;
+            this.minY = 220; // верхній край паркану
+            this.maxY = canvas.height - 70; // нижній край арени
+
+            this.x = faction === 'Stalker' ? 140 : canvas.width - 140;
+            this.y = this.minY + Math.random() * (this.maxY - this.minY);
+
             this.target = null;
             this.attackCooldown = 0;
             this.color = faction === 'Stalker' ? '#00ff66' : '#ff0055';
@@ -289,15 +381,21 @@
                 } else {
                     if (this.attackCooldown <= 0) {
                         this.attack(this.target);
-                        this.attackCooldown = 50;
+                        this.attackCooldown = 45;
                     }
                 }
             } else {
                 let centerX = canvas.width / 2;
-                if (Math.abs(this.x - centerX) > 50) {
+                if (Math.abs(this.x - centerX) > 60) {
                     this.x += (this.faction === 'Stalker' ? 1 : -1) * this.speed;
                 }
             }
+
+            // Суворе обмеження координат по забору арени
+            if (this.x < this.minX) this.x = this.minX;
+            if (this.x > this.maxX) this.x = this.maxX;
+            if (this.y < this.minY) this.y = this.minY;
+            if (this.y > this.maxY) this.y = this.maxY;
 
             if (this.attackCooldown > 0) this.attackCooldown--;
         }
@@ -319,12 +417,16 @@
 
         attack(enemy) {
             enemy.hp -= this.damage;
-            createFloatingText(`-${this.damage}`, enemy.x, enemy.y - 20, this.color);
-            
+            createFloatingText(`-${this.damage}`, enemy.x, enemy.y - 25, this.color);
+            createExplosion(enemy.x, enemy.y, this.color);
+
             if (this.faction === 'Stalker') scores.stalkers += this.damage;
             else scores.mutants += this.damage;
 
-            if (enemy.hp <= 0) enemy.hp = 0;
+            if (enemy.hp <= 0) {
+                enemy.hp = 0;
+                createExplosion(enemy.x, enemy.y, '#ffffff');
+            }
         }
 
         draw() {
@@ -333,31 +435,35 @@
             ctx.save();
             ctx.translate(this.x, this.y);
 
-            ctx.shadowBlur = 12;
-            ctx.shadowColor = this.color;
+            // Вибір відповідного скіна залежно від фракції та рівня
+            let skinKey = (this.faction === 'Stalker' ? 'stalker' : 'mutant') + this.tier;
+            let img = images[skinKey];
 
-            ctx.fillStyle = this.color;
-            ctx.beginPath();
-            if (this.faction === 'Stalker') {
-                ctx.rect(-this.size/2, -this.size, this.size, this.size * 1.5);
+            if (img && img.complete && img.naturalWidth !== 0) {
+                ctx.shadowBlur = 10;
+                ctx.shadowColor = this.color;
+                ctx.drawImage(img, -this.size/2, -this.size, this.size, this.size);
             } else {
-                ctx.arc(0, -this.size/2, this.size * 0.8, 0, Math.PI * 2);
+                // Запасний варіант малювання, якщо картинка не підгрузилась
+                ctx.fillStyle = this.color;
+                ctx.fillRect(-this.size/2, -this.size, this.size, this.size);
             }
-            ctx.fill();
 
             ctx.shadowBlur = 0;
 
+            // Нікнейм та рівень над головою
             ctx.fillStyle = '#fff';
-            ctx.font = '11px Courier New';
+            ctx.font = '10px Courier New';
             ctx.textAlign = 'center';
-            ctx.fillText(`${this.name} [${this.rank}]`, 0, -this.size - 18);
+            ctx.fillText(`${this.name} [Рвень ${this.tier}]`, 0, -this.size - 12);
 
-            let barW = 40;
+            // Індикатор здоров'я (HP bar)
+            let barW = this.size * 1.2;
             let barH = 5;
-            ctx.fillStyle = '#222';
-            ctx.fillRect(-barW/2, -this.size - 12, barW, barH);
+            ctx.fillStyle = '#111';
+            ctx.fillRect(-barW/2, -this.size - 8, barW, barH);
             ctx.fillStyle = this.color;
-            ctx.fillRect(-barW/2, -this.size - 12, barW * (this.hp / this.maxHp), barH);
+            ctx.fillRect(-barW/2, -this.size - 8, barW * (this.hp / this.maxHp), barH);
 
             ctx.restore();
         }
@@ -369,12 +475,12 @@
             this.x = x;
             this.y = y;
             this.color = color;
-            this.life = 40;
+            this.life = 35;
         }
-        update() { this.y -= 1; this.life--; }
+        update() { this.y -= 1.2; this.life--; }
         draw() {
             ctx.save();
-            ctx.font = 'bold 16px Courier New';
+            ctx.font = 'bold 15px Courier New';
             ctx.fillStyle = this.color;
             ctx.shadowBlur = 8;
             ctx.shadowColor = this.color;
@@ -387,58 +493,86 @@
         floatingTexts.push(new FloatingText(text, x, y, color));
     }
 
-    function getRankConfig(giftName) {
+    // Розподіл подарунків за командами та рівнями
+    function getGiftTierAndFaction(giftName) {
         const lower = (giftName || '').toLowerCase();
-        if (lower.includes('universe') || lower.includes('lion') || lower.includes('dragon')) {
-            return { name: 'ЕЛІТА', hp: 100, dmg: 20, range: 70, size: 28, speed: 1.8 };
+        
+        // Мутанти (подарунки: GG, Finger Heart, Lion)
+        if (lower.includes('lion') || lower.includes('universe')) {
+            return { faction: 'Mutant', tier: 3 };
         } else if (lower.includes('heart') || lower.includes('cap') || lower.includes('glam')) {
-            return { name: 'ВЕТЕРАН', hp: 40, dmg: 8, range: 50, size: 22, speed: 2.3 };
+            return { faction: 'Mutant', tier: 2 };
+        } else if (lower.includes('gg') || lower.includes('tiktok') || lower.includes('rose')) {
+            // Може бути і Сталкер і Мутант залежно від назви
+            if (lower.includes('rose')) return { faction: 'Stalker', tier: 1 };
+            if (lower.includes('tiktok')) return { faction: 'Stalker', tier: 2 };
+            return { faction: 'Mutant', tier: 1 };
+        }
+
+        // Сталкери за замовчуванням або якщо явно вказано
+        if (lower.includes('universe') || lower.includes('dragon')) {
+            return { faction: 'Stalker', tier: 3 };
+        } else if (lower.includes('cap')) {
+            return { faction: 'Stalker', tier: 2 };
         } else {
-            return { name: 'НОВІЧОК', hp: 15, dmg: 3, range: 40, size: 16, speed: 3.0 };
+            return { faction: 'Stalker', tier: 1 };
         }
     }
 
-    function spawnFighterFromGift(giftName, username, forceFaction) {
-        let faction = forceFaction || (Math.random() < 0.5 ? 'Stalker' : 'Mutant');
-        let config = getRankConfig(giftName);
-        fighters.push(new Fighter(faction, config, username));
+    function spawnFighterFromGift(giftName, username, forcedFaction, forcedTier) {
+        let config = getGiftTierAndFaction(giftName);
+        let faction = forcedFaction || config.faction;
+        let tier = forcedTier || config.tier;
+        fighters.push(new Fighter(faction, tier, username));
     }
 
-    // Прив'язка кнопок тестів напряму через JS
+    // Тестові кнопки
     document.getElementById('testStalkerBtn').addEventListener('click', () => {
-        spawnFighterFromGift('Rose', 'Глядач_Сталкер', 'Stalker');
+        spawnFighterFromGift('Rose', 'Глядач_Сталкер', 'Stalker', Math.floor(Math.random() * 3) + 1);
     });
 
     document.getElementById('testMutantBtn').addEventListener('click', () => {
-        spawnFighterFromGift('Rose', 'Глядач_Мутант', 'Mutant');
+        spawnFighterFromGift('GG', 'Глядач_Мутант', 'Mutant', Math.floor(Math.random() * 3) + 1);
     });
 
     document.getElementById('resetBtn').addEventListener('click', () => {
         fighters = [];
         floatingTexts = [];
+        particleEffects = [];
         scores = { stalkers: 0, mutants: 0 };
+    });
+
+    // Повний екран
+    document.getElementById('fullscreenBtn').addEventListener('click', () => {
+        let wrapper = document.getElementById('game-wrapper');
+        if (!document.fullscreenElement) {
+            wrapper.requestFullscreen().catch(err => {
+                alert(`Помилка переходу на повний екран: ${err.message}`);
+            });
+        } else {
+            document.exitFullscreen();
+        }
     });
 
     function gameLoop() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-        ctx.strokeStyle = 'rgba(46, 77, 50, 0.15)';
-        ctx.lineWidth = 1;
-        for (let x = 0; x < canvas.width; x += 40) {
-            ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, canvas.height); ctx.stroke();
-        }
-        for (let y = 0; y < canvas.height; y += 40) {
-            ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(canvas.width, y); ctx.stroke();
-        }
+        // Оновлення та рендер частинок
+        particleEffects.forEach(p => p.update());
+        particleEffects = particleEffects.filter(p => p.life > 0);
+        particleEffects.forEach(p => p.draw());
 
+        // Оновлення та рендер бійців
         fighters.forEach(f => f.update());
         fighters = fighters.filter(f => f.hp > 0);
         fighters.forEach(f => f.draw());
 
+        // Тексти пошкоджень
         floatingTexts.forEach(ft => ft.update());
         floatingTexts = floatingTexts.filter(ft => ft.life > 0);
         floatingTexts.forEach(ft => ft.draw());
 
+        // Оновлення HUD
         document.getElementById('score-stalkers').innerText = `СТАЛКЕРИ: ${Math.floor(scores.stalkers)}`;
         document.getElementById('score-mutants').innerText = `МУТАНТИ: ${Math.floor(scores.mutants)}`;
 
@@ -452,6 +586,7 @@
 
     gameLoop();
 
+    // Підключення до TikTok LIVE WebSocket мосту
     document.getElementById('connectBtn').addEventListener('click', () => {
         let uniqueId = document.getElementById('uniqueIdInput').value.trim();
         if (!uniqueId) {
@@ -478,7 +613,7 @@
         };
 
         ws.onerror = () => {
-            alert('Помилка WebSocket моста. Перевірте, чи запущено Node.js скрипт.');
+            alert('Помилка WebSocket моста. Перевірте, чи запущено Node.js скрипт на ПК.');
         };
     });
 </script>
